@@ -1,0 +1,238 @@
+<!doctype html>
+<head>
+	<meta charset="utf-8">
+	<title>Task5</title>
+	<style type="text/css">
+		#queue button{
+			color: white;
+			background-color: red;
+			border: none;
+			width: 40px;
+			height: 40px;
+			margin-left: 5px;
+		}
+		#queue{
+			background-color: #d0d0d0;
+			height: 300px;
+			margin-top: 30px;
+		}
+		.city{
+			float: left;
+		}
+		.blank{
+			width: 40px;
+			height: 40px;
+		}
+		 	 
+	</style>
+</head>
+<body>
+	<div id="form">
+		<input type="" id="input">
+		<button id="left_in">左侧入</button>
+		<button id="right_in">右侧入</button>
+		<button id="left_out">左侧出</button>
+		<button id="right_out">右侧出</button>
+		<button id="resort">重排</button>
+	</div>
+	<div id="queue">
+		<div class="city">
+		    <div class="blank"></div>
+		    <button id="北京">10</button>
+		</div>
+		<div class="city">
+		    <div class="blank"></div>
+			<button id="上海">30</button>
+		</div>
+		<div class="city">
+		    <div class="blank"></div>
+			<button id="南京">70</button>
+		</div>
+		<div class="city">
+		    <div class="blank"></div>
+			<button id="武汉">42</button>
+		</div>
+		<div class="city">
+		    <div class="blank"></div>
+			<button id="定远">91</button>
+		</div>
+		<div class="city">
+		    <div class="blank"></div>
+			<button id="重庆">66</button>
+		</div>
+		<div class="city">
+		    <div class="blank"></div>
+			<button id="成都">83</button>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		function leftinHandle(){
+			var re=/\D/;
+			var input=document.getElementById('input');
+			var queueChild=document.getElementById('queue').childNodes;
+		    var buttonNum=0;
+		    for(var i=0;i<queueChild.length;i++){
+		    	if(queueChild[i].nodeType==1){
+		    		buttonNum++;
+		    	}
+		    }
+			if(input.value==""){
+				alert('输入不能为空!');
+			}
+			else if(re.exec(input.value)!=null){
+			    alert('输入包含非法字符!');
+			    input.value=null;
+		    }
+		    else if(parseInt(input.value)>100||parseInt(input.value)<10){
+		    	alert('输入数字大小不合法!');
+		    	input.value=null;
+		    }
+		    else if(buttonNum>11){
+		    	alert("Button数已经达到最大值12!");
+		    	input.value=null;
+		    }
+		    else{
+		    	var div=document.getElementById('queue');
+		    	var button=document.createElement("button");
+		    	var city=document.createElement("div");
+		    	var blank=document.createElement("div");
+		    	button.innerHTML=input.value;
+		    	blank.class='blank';
+		    	city.class='city';
+		    	city.style.float='left';
+		    	city.appendChild(blank);
+		    	city.appendChild(button);
+		    	city.addEventListener('click',deleteNode);
+		    	div.insertBefore(city,div.firstElementChild);
+		    	input.value=null;
+		    	paint();
+		    }
+		}
+ 
+		function leftoutHandle(){
+			var div=document.getElementById('queue');
+			if(div.firstChild.nodeType==1){
+				var value=div.firstChild.innerHTML;
+			    alert(value);
+			    div.removeChild(div.firstChild);
+			}
+			else{
+				div.removeChild(div.firstChild);
+				var value=div.firstChild.innerHTML;
+			    alert(value);
+			    div.removeChild(div.firstChild);
+			}
+		}
+ 
+		function rightinHandle(){
+			var re=/\D/;
+			var input=document.getElementById('input');
+			var queueChild=document.getElementById('queue').childNodes;
+		    var buttonNum=0;
+		    for(var i=0;i<queueChild.length;i++){
+		    	if(queueChild[i].nodeType==1){
+		    		buttonNum++;
+		    	}
+		    }
+			if(input.value==""){
+				alert('输入不能为空!');
+			}
+			else if(re.exec(input.value)!=null){
+			    alert('输入包含非法字符!');
+			    input.value=null;
+		    }
+		    else if(parseInt(input.value)>100||parseInt(input.value)<10){
+		    	alert('输入数字大小不合法!');
+		    	input.value=null;
+		    }
+		    else if(buttonNum>11){
+		    	alert("Button数已经达到最大值12!");
+		    	input.value=null;
+		    }
+		    else{
+		    	var div=document.getElementById('queue');
+		    	var button=document.createElement("button");
+		    	var city=document.createElement("div");
+		    	var blank=document.createElement("div");
+		    	button.innerHTML=input.value;
+		    	blank.class='blank';
+		    	city.class='city';
+		    	city.style.float='left';
+		    	city.appendChild(blank);
+		    	city.appendChild(button);
+		    	city.addEventListener('click',deleteNode);
+		    	div.appendChild(city);
+		    	input.value=null;
+		    	paint();
+		    }
+		}
+
+		function rightoutHandle(){
+			var div=document.getElementById('queue');
+			if(div.lastChild.nodeType==1){
+				var value=div.lastChild.innerHTML;
+			    alert(value);
+			    div.removeChild(div.lastChild);
+			}
+			else{
+				div.removeChild(div.lastChild);
+				var value=div.lastChild.innerHTML;
+			    alert(value);
+			    div.removeChild(div.lastChild);
+			}
+		}
+
+		function resortHandle(){
+			var cities=document.getElementById('queue').children;
+			/*for(var m=0;m<cities.length;m++){
+				cities[m].id=m+1;
+			}*/
+			for(var m=0;m<cities.length-1;m++){
+				for(var n=0;n<cities.length-1-m;n++){
+					if(parseInt(cities[n].lastElementChild.innerHTML)
+						>parseInt(cities[n+1].lastElementChild.innerHTML)){
+						var temp=cities[n+1].innerHTML;
+					    var city=document.createElement('div')
+					    city.class='city';
+					    city.style.float='left';
+					    city.innerHTML=temp;
+					    document.getElementById('queue').insertBefore(city,cities[n]);
+					    document.getElementById('queue').removeChild(cities[n+2]);
+					}
+				}
+			}
+		}
+
+		function deleteNode(event){
+			document.getElementById('queue').removeChild(event.currentTarget);
+		}
+
+        function paint(){
+        	var nodeList=document.getElementById('queue').childNodes;
+			for(var x=0;x<nodeList.length;x++){
+				if(nodeList[x].nodeType==1){
+					nodeList[x].addEventListener("click",deleteNode);
+					var buttonHeight=parseInt(nodeList[x].lastElementChild.innerHTML);
+					nodeList[x].firstElementChild.style.height=300-buttonHeight*3+"px";
+					nodeList[x].lastElementChild.style.height=buttonHeight*3+'px';
+				}
+			}
+        }
+
+		function init(){
+			var leftin=document.getElementById('left_in');
+			var leftout=document.getElementById('left_out');
+			var rightin=document.getElementById('right_in');
+			var rightout=document.getElementById('right_out');
+			leftin.addEventListener('click',leftinHandle);
+			leftout.addEventListener('click',leftoutHandle);
+			rightin.addEventListener('click',rightinHandle);
+			rightout.addEventListener('click',rightoutHandle);
+			resort.addEventListener('click',resortHandle);
+			paint();
+		}
+
+		init();
+	</script>
+</body>
